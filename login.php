@@ -1,4 +1,18 @@
+<?php
+require_once 'header.php';
 
+if (isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit;
+}
+
+$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+
+    if (empty($email) || empty($password)) {
+        $error = "All fields are required.";
     } else {
         $stmt = $pdo->prepare("SELECT id, username, password_hash FROM users WHERE email = ?");
         $stmt->execute([$email]);
