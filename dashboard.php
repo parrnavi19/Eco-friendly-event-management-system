@@ -1,3 +1,17 @@
+<?php
+require_once 'header.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Fetch user's created events
+$stmt = $pdo->prepare("SELECT * FROM events WHERE organizer_id = ? ORDER BY event_date DESC");
+$stmt->execute([$user_id]);
+$my_events = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
