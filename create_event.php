@@ -1,4 +1,18 @@
+<?php
+require_once 'header.php';
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$error = '';
+$success = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = trim($_POST['title']);
+    $description = trim($_POST['description']);
+    $event_date = $_POST['event_date'];
     $event_time = $_POST['event_time'];
     $location = trim($_POST['location']);
     $eco_pledge = $_POST['eco_pledge'];
