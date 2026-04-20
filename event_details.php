@@ -1,4 +1,21 @@
+<?php
+require_once 'header.php';
 
+if (!isset($_GET['id'])) {
+    header("Location: index.php");
+    exit;
+}
+
+$stmt = $pdo->prepare("SELECT e.*, u.username as organizer FROM events e JOIN users u ON e.organizer_id = u.id WHERE e.id = ?");
+$stmt->execute([$_GET['id']]);
+$event = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$event) {
+    echo "<div class='alert alert-error'>Event not found.</div>";
+    require_once 'footer.php';
+    exit;
+}
+?>
 
 <div style="background: var(--surface-color); padding: 3rem; border-radius: var(--border-radius); box-shadow: var(--shadow-lg); max-width: 800px; margin: 0 auto; animation: fadeIn 0.5s ease-out;">
     <div class="eco-badge" style="font-size: 1rem; margin-bottom: 1.5rem;">🌿 <?php echo htmlspecialchars(ucfirst(str_replace('-', ' ', $event['eco_impact_pledge']))); ?></div>
